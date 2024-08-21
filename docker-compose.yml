@@ -1,0 +1,41 @@
+version: '3.8'
+
+x-environment: &global-env
+  POSTGRES_JDBC_URL: jdbc:postgresql://db:5432/postgres
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: secret
+  TELEGRAM_BOT_TOKEN: secret
+  STATIC_MAP_SERVICE_PORT: 8081
+  SERVICE_STATIC_MAP_URL: http://static-map-service:8081
+  OPENTRIPMAP_API_KEY: secret
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      <<: *global-env
+    ports:
+      - "5432:5432"
+
+  static-map-service:
+    build:
+      context: static-map-service
+      dockerfile: Dockerfile
+    container_name: static_map_service_container
+    environment:
+      <<: *global-env
+    ports:
+      - "8081:8081"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bot_container
+    environment:
+      <<: *global-env
+    depends_on:
+      - db
+      - static-map-service

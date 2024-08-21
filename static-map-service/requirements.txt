@@ -1,0 +1,9 @@
+Flask~=2.2.2
+requests~=2.25.1
+typing~=3.7.4.3
+s2sphere~=0.2.5
+Pillow~=9.5.0
+geographiclib~=2.0
+appdirs~=1.4.4
+svgwrite~=1.4.3
+python-slugify~=8.0.4
